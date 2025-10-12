@@ -24,4 +24,4 @@ export * from "./controllers/user.controller";
 // --------------------
 // Middleware Exports
 // --------------------
-export * from "./middlewares/auth";
+export * from "./middlewares/auth.middleware";

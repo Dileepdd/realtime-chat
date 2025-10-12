@@ -45,7 +45,7 @@ export class DataService<T extends Document> {
   // Advanced Query Method
   // --------------------
   async query(options: QueryOptions<T>): Promise<T[]> {
-    const { filter = {}, select, populate, skip = 0, limit = 0, sort } = options;
+    const { filter = {}, select, populate, skip = 0, limit = 10, sort } = options;
 
     let query = this.model.find(filter);
 
