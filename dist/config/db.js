@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/realtime-chat-app';
+const MONGO_URL = process.env.MONGO_URI || '';
+console.log('MONGO_URL', MONGO_URL);
 export const connectDB = async () => {
     try {
         await mongoose.connect(MONGO_URL);
