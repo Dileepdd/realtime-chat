@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGO_URL = process.env.MONGO_URI || 'mongodb://localhost:27017/realtime-chat-app';
+const MONGO_URL = process.env.MONGO_URI || '';
 
 export const connectDB = async () => {
   try {
