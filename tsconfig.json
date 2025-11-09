@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
     "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": "src",
+    "outDir": "dist",
     "types": ["node", "jest"],
     "sourceMap": true,
     "declaration": true,
@@ -11,10 +14,11 @@
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    // "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*.ts", "src/types/**/*.d.ts"],
+  "exclude": ["node_modules", "dist"]
 }

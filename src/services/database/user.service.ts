@@ -1,5 +1,5 @@
-import { DataService } from "./data.service";
-import { User, IUserDocument } from "../../models/User";
+import { DataService } from './data.service.js';
+import { User, IUserDocument } from '../../models/User.js';
 
 // Model-specific service extending generic DataService
 export class UserService extends DataService<IUserDocument> {
@@ -10,6 +10,10 @@ export class UserService extends DataService<IUserDocument> {
   // Model-specific method: find by email
   async findByEmail(email: string): Promise<IUserDocument | null> {
     return this.model.findOne({ email }).exec();
+  }
+
+  async findByEmailWithPassword(email: string): Promise<IUserDocument | null> {
+    return this.model.findOne({ email }).select('+password').exec();
   }
 
   // Model-specific method: find by username

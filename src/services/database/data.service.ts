@@ -1,4 +1,4 @@
-import { Model, Document, FilterQuery, UpdateQuery, PopulateOptions } from "mongoose";
+import { Model, Document, FilterQuery, UpdateQuery, PopulateOptions } from 'mongoose';
 
 interface QueryOptions<T> {
   filter?: FilterQuery<T>;
@@ -55,7 +55,7 @@ export class DataService<T extends Document> {
     // Handle populate
     if (populate) {
       let pop: PopulateOptions | (string | PopulateOptions)[];
-      if (typeof populate === "string" || "path" in (populate as PopulateOptions)) {
+      if (typeof populate === 'string' || 'path' in (populate as PopulateOptions)) {
         pop = populate as PopulateOptions;
       } else if (Array.isArray(populate)) {
         pop = populate;

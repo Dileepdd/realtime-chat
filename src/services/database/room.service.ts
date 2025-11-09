@@ -1,6 +1,6 @@
-import { Room } from "../../models/Room";
-import { DataService } from "./data.service";
-import { IRoomDocument } from "../../models/Room";
+import { Room } from '../../models/Room.js';
+import { DataService } from './data.service.js';
+import { IRoomDocument } from '../../models/Room.js';
 
 // Model-specific service extending generic DataService
 export class RoomService extends DataService<IRoomDocument> {

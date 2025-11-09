@@ -1,5 +1,5 @@
-import { roomService } from "../services/database/room.service";
-import mongoose, { mongo } from "mongoose";
+import { roomService } from '../services/database/room.service.js';
+import mongoose from 'mongoose';
 
 export const ensureRoom = async ({
   userId,

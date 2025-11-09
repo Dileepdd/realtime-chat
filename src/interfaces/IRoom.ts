@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 export interface IRoom {
   name?: string;
-  isGroup: Boolean;
+  isGroup: boolean;
   members: mongoose.Types.ObjectId[];
   createdBy: mongoose.Types.ObjectId;
   updatedBy?: mongoose.Types.ObjectId;

@@ -1,21 +1,22 @@
-import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { userService } from "../services/database/user.service";
-import { IUser } from "../interfaces/IUser";
+import { Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { userService } from '../services/database/user.service.js';
+import { IUser } from '../interfaces/IUser.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 // Signup controller
 export const signup = async (req: Request, res: Response) => {
   const { username, email, password, firstname, lastname } = req.body as IUser;
   if (!username || !email || !password)
-    return res.status(400).json({ message: "Required fields are missing" });
+    return res.status(400).json({ message: 'Required fields are missing' });
 
   try {
-    const existingUser = await userService.findOne({ $or: [{ email }, { username }] });
-    if (existingUser)
-      return res.status(400).json({ message: "User already exists" });
+    const existingUser = await userService.findOne({
+      $or: [{ email }, { username }],
+    });
+    if (existingUser) return res.status(400).json({ message: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -28,7 +29,7 @@ export const signup = async (req: Request, res: Response) => {
       ...(lastname && { lastname }),
     });
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1d' });
 
     res.status(201).json({
       token,
@@ -41,25 +42,44 @@ export const signup = async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err });
+    res.status(500).json({ message: 'Server error', error: err });
   }
 };
 
 // Login controller
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body as IUser;
-
   try {
-    const user = await userService.findByEmail(email);
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    const { email, password } = req.body as IUser;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and password are required.',
+      });
+    }
+
+    const user = await userService.findByEmailWithPassword(email);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid credentials',
+      });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid credentials',
+      });
+    }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1d' });
 
-    res.json({
+    return res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'User verified successfully',
       token,
       user: {
         id: user._id,
@@ -69,7 +89,21 @@ export const login = async (req: Request, res: Response) => {
         lastname: user.lastname,
       },
     });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err });
+  } catch (err: unknown) {
+    console.error('Login error:', err);
+
+    if (err instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        message: 'Server error during login',
+        error: err.message,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: 'Server error during login',
+      error: String(err),
+    });
   }
 };

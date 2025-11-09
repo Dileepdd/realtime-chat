@@ -1,6 +1,6 @@
-import { Message } from "../../models/IMessage";
-import { DataService } from "./data.service";
-import { IMessageDocument } from "../../models/IMessage";
+import { Message } from '../../models/IMessage.js';
+import { DataService } from './data.service.js';
+import { IMessageDocument } from '../../models/IMessage.js';
 
 // Model-specific service extending generic DataService
 export class MessageService extends DataService<IMessageDocument> {

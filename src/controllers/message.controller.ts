@@ -1,14 +1,10 @@
-import { messageService } from "../services/database/message.service";
-import { Request, Response, NextFunction } from "express";
+import { messageService } from '../services/database/message.service.js';
+import { Request, Response } from 'express';
 
-export const createMessage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const createMessage = async (req: Request, res: Response) => {
   try {
     const { roomId, content, type } = req.body;
-    const userId = (req as any).userId;
+    const userId = req.userId;
 
     const message = await messageService.create({
       roomId,
@@ -18,6 +14,28 @@ export const createMessage = async (
     });
     res.status(201).json(message);
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err });
+    res.status(500).json({ message: 'Server error', error: err });
   }
-}
+};
+
+export const getMessagesByRoomId = async (req: Request, res: Response) => {
+  try {
+    const { roomId } = req.params;
+
+    if (!roomId) {
+      return res.status(400).json({ success: false, message: 'roomId is required' });
+    }
+
+    const messages = await messageService.find({ roomId });
+
+    res.status(200).json({
+      success: true,
+      roomId,
+      total: messages.length,
+      messages,
+    });
+  } catch (err) {
+    console.error('Error fetching messages:', err);
+    res.status(500).json({ success: false, message: 'Server error', error: err });
+  }
+};
