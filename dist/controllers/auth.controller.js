@@ -41,6 +41,7 @@ export const signup = async (req, res) => {
 // Login controller
 export const login = async (req, res) => {
     try {
+        console.time('signin');
         const { email, password } = req.body;
         if (!email || !password) {
             return res.status(400).json({
@@ -48,7 +49,9 @@ export const login = async (req, res) => {
                 message: 'Email and password are required.',
             });
         }
+        console.time('user');
         const user = await userService.findByEmailWithPassword(email);
+        console.timeEnd('user');
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -63,6 +66,7 @@ export const login = async (req, res) => {
             });
         }
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1d' });
+        console.timeEnd('signin');
         return res.status(200).json({
             success: true,
             status: 200,
