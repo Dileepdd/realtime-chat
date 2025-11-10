@@ -70,7 +70,9 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
+    console.time('isMatch');
     const isMatch = await bcrypt.compare(password, user.password);
+    console.timeEnd('isMatch');
     if (!isMatch) {
       return res.status(400).json({
         success: false,

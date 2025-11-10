@@ -1,4 +1,11 @@
-import { Model, Document, FilterQuery, UpdateQuery, PopulateOptions } from 'mongoose';
+import {
+  Model,
+  Document,
+  FilterQuery,
+  UpdateQuery,
+  PopulateOptions,
+  PipelineStage,
+} from 'mongoose';
 
 interface QueryOptions<T> {
   filter?: FilterQuery<T>;
@@ -73,5 +80,9 @@ export class DataService<T extends Document> {
     if (sort) query = query.sort(sort);
 
     return query.exec();
+  }
+
+  async aggregate(pipeline: PipelineStage[]): Promise<any[]> {
+    return this.model.aggregate(pipeline).exec();
   }
 }

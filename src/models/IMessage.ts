@@ -21,4 +21,14 @@ const MessageSchema: Schema = new Schema(
   }
 );
 
+MessageSchema.post('save', async function (doc) {
+  try {
+    await mongoose.model('Room').findByIdAndUpdate(doc.roomId, {
+      updatedAt: new Date(),
+    });
+  } catch (err) {
+    console.error('Failed to update room timestamp:', err);
+  }
+});
+
 export const Message = mongoose.model<IMessageDocument>('Message', MessageSchema);
