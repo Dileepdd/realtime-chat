@@ -1,4 +1,4 @@
-import { Model, Document, FilterQuery, UpdateQuery, PopulateOptions } from 'mongoose';
+import { Model, Document, FilterQuery, UpdateQuery, PopulateOptions, PipelineStage } from 'mongoose';
 interface QueryOptions<T> {
     filter?: FilterQuery<T>;
     select?: string | string[] | Record<string, 1 | 0>;
@@ -17,6 +17,7 @@ export declare class DataService<T extends Document> {
     delete(filter: FilterQuery<T>): Promise<T | null>;
     count(filter?: FilterQuery<T>): Promise<number>;
     query(options: QueryOptions<T>): Promise<T[]>;
+    aggregate(pipeline: PipelineStage[]): Promise<any[]>;
 }
 export {};
 //# sourceMappingURL=data.service.d.ts.map

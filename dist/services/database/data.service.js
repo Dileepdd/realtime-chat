@@ -58,5 +58,8 @@ export class DataService {
             query = query.sort(sort);
         return query.exec();
     }
+    async aggregate(pipeline) {
+        return this.model.aggregate(pipeline).exec();
+    }
 }
 //# sourceMappingURL=data.service.js.map
